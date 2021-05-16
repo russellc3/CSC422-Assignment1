@@ -7,7 +7,7 @@ public class PetDatabase {
 	public static ArrayList<Pet> petDatabase = new ArrayList<Pet>();
 	static Scanner input = new Scanner(System.in);
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
 		petDatabase.add(new Pet("fido", 2));
 		petDatabase.add(new Pet("mittens", 5));
@@ -17,7 +17,6 @@ public class PetDatabase {
 		boolean validInput = false;
 		
 		System.out.print("Pet Database Program\n");
-		printMenu();
 		
 		while (menuSelection!=7) {
 			validInput = false;
@@ -57,8 +56,10 @@ public class PetDatabase {
 					addPet();
 					break;
 				case 3:
+					updatePet();
 					break;
 				case 4:
+					removePet();
 					break;
 				case 5:
 					nameSearch();
@@ -98,6 +99,7 @@ public class PetDatabase {
 		String name = "";
 		int age = 0;
 		int numPetsAdded = 0;
+		input.nextLine();
 		
 		do {
 			
@@ -113,6 +115,39 @@ public class PetDatabase {
 		} while (!name.equals("done"));
 		
 		System.out.print("\n" + numPetsAdded + " pets added.\n");
+	}
+	
+	public static void updatePet () {
+		
+		int petToUpdate = -1;
+		String newName = "";
+		int newAge = 0;
+		String line = "";
+		
+		printPets();
+		System.out.print("Enter the pet ID you want to update: ");
+		petToUpdate = input.nextInt();
+		input.nextLine();
+		System.out.println("Enter new name and new age: ");
+		line = input.nextLine();
+		String[] part = line.split("(?<=\\D)(?=\\d)");
+		newName = part[0].toLowerCase();
+		newAge = Integer.parseInt(part[1]);
+		System.out.print(petDatabase.get(petToUpdate).getName() + " " + petDatabase.get(petToUpdate).getAge() + " changed to " + newName + " " + newAge);
+		petDatabase.get(petToUpdate).setName(newName);
+		petDatabase.get(petToUpdate).setAge(newAge);
+	}
+	
+	public static void removePet () {
+
+		int petToRemove = -1;
+		
+		printPets();
+		System.out.print("Enter the pet ID you want to remove: ");
+		petToRemove = input.nextInt();
+		input.nextLine();
+		System.out.print(petDatabase.get(petToRemove).getName() + " " + petDatabase.get(petToRemove).getAge() + " have been removed.");
+		petDatabase.remove(petToRemove);
 	}
 	
 	public static void nameSearch () {
